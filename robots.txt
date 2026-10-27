@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zivashq.github.io/zivas_corporate_website/sitemap.xml
