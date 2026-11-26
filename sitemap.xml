@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://zivashq.github.io/zivas/</loc><priority>1.0</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/institutions.html</loc><priority>0.9</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/features.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/how-it-works.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/lecturers.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/students.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/company.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/services.html</loc><priority>0.7</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/early-access.html</loc><priority>0.9</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/faq.html</loc><priority>0.6</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/privacy.html</loc><priority>0.5</priority></url>
-  <url><loc>https://zivashq.github.io/zivas/terms.html</loc><priority>0.5</priority></url>
+  <url><loc>https://zivas.online/</loc><priority>1.0</priority></url>
+  <url><loc>https://zivas.online/institutions.html</loc><priority>0.9</priority></url>
+  <url><loc>https://zivas.online/features.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/how-it-works.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/lecturers.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/students.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/company.html</loc><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/services.html</loc><priority>0.7</priority></url>
+  <url><loc>https://zivas.online/early-access.html</loc><priority>0.9</priority></url>
+  <url><loc>https://zivas.online/faq.html</loc><priority>0.6</priority></url>
+  <url><loc>https://zivas.online/privacy.html</loc><priority>0.5</priority></url>
+  <url><loc>https://zivas.online/terms.html</loc><priority>0.5</priority></url>
 </urlset>
