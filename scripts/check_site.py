@@ -113,6 +113,15 @@ for page in PAGES:
         errors.append(f"{page}: expected exactly one non-empty title")
     if not parser.description:
         errors.append(f"{page}: missing meta description")
+    # Validate the main page heading outline (footer navigation headings are decorative landmarks).
+    content_headings = [level for level, _ in parser.headings if level <= 3]
+    if content_headings:
+        if content_headings[0] != 1:
+            errors.append(f"{page}: content heading outline must start with H1")
+        for previous, current in zip(content_headings, content_headings[1:]):
+            if current > previous + 1:
+                errors.append(f"{page}: heading level jumps from H{previous} to H{current}")
+
     if not noindex:
         if not parser.canonical.startswith(BASE):
             errors.append(f"{page}: missing canonical URL on https://zivas.online/")
