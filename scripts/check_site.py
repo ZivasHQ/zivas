@@ -101,6 +101,14 @@ for page in PAGES:
             if unquote(parts.fragment) not in target_parser.ids:
                 errors.append(f"{page}: missing anchor #{parts.fragment} in {parts.path or page}")
 
+# The homepage redesign must remain a genuinely distinct page, not only a shared CSS update.
+home = (ROOT / "index.html").read_text(encoding="utf-8")
+for required in ("v2-hero", "v2-pillar-grid", "v2-showcase-grid", "v2-cap-grid", "v2-final-cta"):
+    if required not in home:
+        errors.append(f"index.html: missing redesigned homepage section {required}")
+if "https://zivas.online/assets/img/shot-dashboard.png" not in home:
+    errors.append("index.html: social preview must use the real product dashboard image")
+
 if errors:
     print("ZIVAS website checks failed:")
     for error in errors:
