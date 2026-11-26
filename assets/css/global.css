@@ -347,3 +347,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
  .v2-final-cta h2{font-size:34px}
 }
 @media(prefers-reduced-motion:reduce){.v2-text-link,.v2-inline-link{transition:none}}
+
+
+/* Preserve the existing card typography after semantic heading-level corrections. */
+.feature-card h2{margin:17px 0 8px;font-size:17px;line-height:1.35;letter-spacing:-.02em}
+.service h2{margin:0 0 8px;font-size:17px}
+.workflow h2{margin:13px 0 6px;font-size:17px}
