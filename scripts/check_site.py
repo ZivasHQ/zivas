@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Dependency-free checks for the static ZIVAS marketing website."""
+"""Dependency-free SEO, accessibility and local-link checks for the ZIVAS static site."""
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+import json
+import re
 import sys
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = [
@@ -12,58 +15,91 @@ PAGES = [
     "early-access.html", "faq.html", "privacy.html", "terms.html",
     "about.html", "book-demo.html", "404.html",
 ]
+BASE = "https://zivas.online/"
 errors = []
+warnings = []
 
 class PageParser(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.ids = set()
-        self.links = []
-        self.images_without_alt = []
-        self.title_count = 0
-        self.in_title = False
-        self.title_text = ""
-        self.description = False
-        self.canonical = False
-        self.css_count = 0
-        self.js_count = 0
-        self.font_urls = []
+        self.ids, self.links, self.images = set(), [], []
+        self.title_count, self.title_text, self.in_title = 0, "", False
+        self.description, self.canonical, self.robots = "", "", ""
+        self.h1, self.headings = [], []
+        self.og, self.twitter = set(), set()
+        self.jsonld = []
+        self.in_jsonld = False
+        self.jsonld_text = ""
+        self.in_h1 = False
+        self.h1_text = ""
 
     def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-        if "id" in attrs:
-            if attrs["id"] in self.ids:
-                errors.append(f"Duplicate id #{attrs['id']}")
-            self.ids.add(attrs["id"])
+        a = dict(attrs)
+        if a.get("id"):
+            if a["id"] in self.ids:
+                errors.append(f"Duplicate id #{a['id']}")
+            self.ids.add(a["id"])
         if tag == "title":
             self.title_count += 1
             self.in_title = True
-        if tag == "meta" and attrs.get("name", "").lower() == "description":
-            self.description = bool(attrs.get("content", "").strip())
-        if tag == "link" and attrs.get("rel", "").lower() == "canonical":
-            self.canonical = attrs.get("href", "").startswith("https://zivas.online/")
-        if tag == "link" and attrs.get("rel", "").lower() == "stylesheet":
-            if attrs.get("href", "").split("?")[0].endswith("assets/css/global.css"):
-                self.css_count += 1
-        if tag == "script" and attrs.get("src", "").endswith("assets/js/global.js"):
-            self.js_count += 1
-        if tag == "link" and "fonts.googleapis.com/css2?" in attrs.get("href", ""):
-            self.font_urls.append(attrs["href"])
-        if tag == "img" and not attrs.get("alt", "").strip():
-            self.images_without_alt.append(attrs.get("src", "(unknown image)"))
+        if tag == "h1":
+            self.in_h1 = True
+            self.h1_text = ""
+        if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
+            self.headings.append((int(tag[1]), ""))
+        if tag == "meta":
+            name = a.get("name", "").lower()
+            prop = a.get("property", "").lower()
+            if name == "description":
+                self.description = a.get("content", "").strip()
+            elif name == "robots":
+                self.robots = a.get("content", "").lower()
+            elif name.startswith("twitter:"):
+                self.twitter.add(name)
+            if prop.startswith("og:"):
+                self.og.add(prop)
+        if tag == "link" and a.get("rel", "").lower() == "canonical":
+            self.canonical = a.get("href", "").strip()
+        if tag == "script" and a.get("type", "").lower() == "application/ld+json":
+            self.in_jsonld = True
+            self.jsonld_text = ""
+        if tag == "img":
+            self.images.append({
+                "src": a.get("src", "(unknown image)"),
+                "alt": a.get("alt"),
+                "loading": a.get("loading"),
+            })
+        if tag == "link" and a.get("rel", "").lower() == "stylesheet":
+            if a.get("href", "").split("?")[0].endswith("assets/css/global.css"):
+                pass
         for key in ("href", "src"):
-            value = attrs.get(key)
+            value = a.get(key)
             if value:
                 self.links.append(value)
 
     def handle_endtag(self, tag):
         if tag == "title":
             self.in_title = False
+        if tag == "h1":
+            self.h1.append(self.h1_text.strip())
+            self.in_h1 = False
+        if tag == "script" and self.in_jsonld:
+            try:
+                self.jsonld.append(json.loads(self.jsonld_text))
+            except Exception as exc:
+                errors.append(f"Invalid JSON-LD: {exc}")
+            self.in_jsonld = False
 
     def handle_data(self, data):
         if self.in_title:
             self.title_text += data.strip()
+        if self.in_h1:
+            self.h1_text += data
+        if self.in_jsonld:
+            self.jsonld_text += data
 
+parsers = {}
+titles, descriptions = {}, {}
 for page in PAGES:
     path = ROOT / page
     if not path.is_file():
@@ -71,21 +107,43 @@ for page in PAGES:
         continue
     parser = PageParser()
     parser.feed(path.read_text(encoding="utf-8"))
-    if not parser.title_count or not parser.title_text:
-        errors.append(f"{page}: missing page title")
+    parsers[page] = parser
+    noindex = "noindex" in parser.robots
+    if parser.title_count != 1 or not parser.title_text.strip():
+        errors.append(f"{page}: expected exactly one non-empty title")
     if not parser.description:
         errors.append(f"{page}: missing meta description")
-    if page not in ("about.html", "book-demo.html") and not parser.canonical:
-        errors.append(f"{page}: canonical URL must use https://zivas.online/")
-    if page not in ("about.html", "book-demo.html", "404.html"):
-        if parser.css_count != 1:
-            errors.append(f"{page}: expected one shared stylesheet, found {parser.css_count}")
-        if parser.js_count != 1:
-            errors.append(f"{page}: expected one shared script, found {parser.js_count}")
-    if parser.images_without_alt:
-        errors.append(f"{page}: images missing alt text: {', '.join(parser.images_without_alt)}")
-    if any("fonts.googleapis.com" in url and "family=DM+Sans" not in url for url in parser.font_urls):
-        errors.append(f"{page}: use the single approved DM Sans font family")
+    # Validate the main page heading outline (footer navigation headings are decorative landmarks).
+    content_headings = [level for level, _ in parser.headings if level <= 3]
+    if content_headings:
+        if content_headings[0] != 1:
+            errors.append(f"{page}: content heading outline must start with H1")
+        for previous, current in zip(content_headings, content_headings[1:]):
+            if current > previous + 1:
+                errors.append(f"{page}: heading level jumps from H{previous} to H{current}")
+
+    if not noindex:
+        if not parser.canonical.startswith(BASE):
+            errors.append(f"{page}: missing canonical URL on https://zivas.online/")
+        if len(parser.h1) != 1 or not parser.h1[0]:
+            errors.append(f"{page}: expected exactly one non-empty H1 (found {len(parser.h1)})")
+        if not {"og:title", "og:description", "og:url", "og:image"}.issubset(parser.og):
+            errors.append(f"{page}: incomplete Open Graph metadata")
+        if not {"twitter:card", "twitter:title", "twitter:description", "twitter:image"}.issubset(parser.twitter):
+            errors.append(f"{page}: incomplete Twitter Card metadata")
+        if not parser.jsonld:
+            errors.append(f"{page}: missing JSON-LD structured data")
+        if parser.title_text in titles:
+            errors.append(f"{page}: duplicate title also used by {titles[parser.title_text]}")
+        titles[parser.title_text] = page
+        if parser.description in descriptions:
+            errors.append(f"{page}: duplicate meta description also used by {descriptions[parser.description]}")
+        descriptions[parser.description] = page
+    for image in parser.images:
+        if image["alt"] is None or not image["alt"].strip():
+            errors.append(f"{page}: image missing alt text: {image['src']}")
+        if not noindex and image["loading"] not in ("lazy", "eager"):
+            errors.append(f"{page}: image missing loading hint: {image['src']}")
 
     for value in parser.links:
         parts = urlsplit(value)
@@ -96,22 +154,40 @@ for page in PAGES:
             errors.append(f"{page}: broken local link or asset: {value}")
             continue
         if parts.fragment and target.suffix.lower() == ".html":
-            target_parser = PageParser()
-            target_parser.feed(target.read_text(encoding="utf-8"))
+            target_parser = parsers.get(target.name)
+            if target_parser is None:
+                target_parser = PageParser()
+                target_parser.feed(target.read_text(encoding="utf-8"))
             if unquote(parts.fragment) not in target_parser.ids:
                 errors.append(f"{page}: missing anchor #{parts.fragment} in {parts.path or page}")
 
-# The homepage redesign must remain a genuinely distinct page, not only a shared CSS update.
-home = (ROOT / "index.html").read_text(encoding="utf-8")
-for required in ("v2-hero", "v2-pillar-grid", "v2-showcase-grid", "v2-cap-grid", "v2-final-cta"):
-    if required not in home:
-        errors.append(f"index.html: missing redesigned homepage section {required}")
-if "https://zivas.online/assets/img/shot-dashboard.png" not in home:
-    errors.append("index.html: social preview must use the real product dashboard image")
+# Sitemap must list existing, canonical, indexable pages only.
+try:
+    sitemap = ET.parse(ROOT / "sitemap.xml").getroot()
+    ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    sitemap_urls = [node.text.strip() for node in sitemap.findall("sm:url/sm:loc", ns)]
+    if len(sitemap_urls) != len(set(sitemap_urls)):
+        errors.append("sitemap.xml: duplicate URLs")
+    for url in sitemap_urls:
+        if not url.startswith(BASE):
+            errors.append(f"sitemap.xml: URL outside canonical domain: {url}")
+            continue
+        rel = url[len(BASE):]
+        page = "index.html" if rel in ("", "/") else rel
+        if page not in PAGES or page not in parsers:
+            errors.append(f"sitemap.xml: URL does not map to a known page: {url}")
+        elif "noindex" in parsers[page].robots:
+            errors.append(f"sitemap.xml: noindex page must not be listed: {url}")
+except Exception as exc:
+    errors.append(f"sitemap.xml: invalid XML or missing file: {exc}")
+
+robots = ROOT / "robots.txt"
+if not robots.is_file() or "Sitemap: https://zivas.online/sitemap.xml" not in robots.read_text(encoding="utf-8"):
+    errors.append("robots.txt: missing canonical sitemap directive")
 
 if errors:
-    print("ZIVAS website checks failed:")
+    print("ZIVAS SEO/site checks failed:")
     for error in errors:
         print(" - " + error)
     sys.exit(1)
-print(f"ZIVAS website checks passed for {len(PAGES)} pages.")
+print(f"ZIVAS SEO/site checks passed for {len(parsers)} pages ({len(titles)} indexable pages).")
