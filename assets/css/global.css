@@ -20,7 +20,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:96px}
 body{margin:0;background:var(--white);color:var(--ink);font:400 16px/1.7 var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-body,button,input,select,textarea{font-family:var(--font)}
+body,button,input,select,textarea,h1,h2,h3,h4{font-family:var(--font)}
 a{color:inherit}
 img{display:block;max-width:100%;height:auto}
 button,input,select,textarea{font:inherit}
@@ -37,6 +37,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .nav-links{display:flex;align-items:center;justify-content:center;gap:clamp(14px,2vw,25px)}
 .nav-links a{color:#d7e2e7;text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap;transition:color .18s ease}
 .nav-links a:hover,.nav-links a[aria-current=page]{color:var(--accent)}
+.nav-links a[aria-current=page]{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:7px;text-decoration-thickness:2px}
 .nav-actions{display:flex;align-items:center;gap:9px;flex:none}
 .menu-toggle{display:none;border:1px solid #425968;background:transparent;color:#fff;border-radius:999px;padding:9px 15px;font-size:13px;font-weight:650;cursor:pointer}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:12px 20px;border:1px solid transparent;border-radius:999px;text-decoration:none;text-align:center;font-size:13px;line-height:1.2;font-weight:700;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}
