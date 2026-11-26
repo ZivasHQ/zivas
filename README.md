@@ -42,7 +42,7 @@ This is a static HTML/CSS/JavaScript site; edit the HTML pages directly. Do not 
 
 ## Deployment and SEO
 
-The GitHub Pages site is published at https://zivashq.github.io/zivas/. Keep canonical URLs, Open Graph URLs, sitemap URLs and asset paths aligned with that base URL.
+The GitHub Pages site uses the custom domain configured in CNAME: https://zivas.online/. The GitHub Pages project URL may redirect to the custom domain. Keep canonical URLs, Open Graph URLs, sitemap URLs and asset paths aligned with that base URL.
 
 ## Repositories
 
