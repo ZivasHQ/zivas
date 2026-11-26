@@ -47,7 +47,7 @@ class PageParser(HTMLParser):
                 self.css_count += 1
         if tag == "script" and attrs.get("src", "").endswith("assets/js/global.js"):
             self.js_count += 1
-        if tag == "link" and "fonts.googleapis.com" in attrs.get("href", ""):
+        if tag == "link" and "fonts.googleapis.com/css2?" in attrs.get("href", ""):
             self.font_urls.append(attrs["href"])
         if tag == "img" and not attrs.get("alt", "").strip():
             self.images_without_alt.append(attrs.get("src", "(unknown image)"))
