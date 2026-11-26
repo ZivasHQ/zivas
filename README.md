@@ -1,47 +1,52 @@
-# Zivas public website
+# ZIVAS public website
 
-The public marketing website for Zivas. This repository is separate from the production application repositories.
+The public marketing website for ZIVAS, published with GitHub Pages from this repository.
 
-## Positioning
+## Brand and positioning
 
-Zivas is an academic operations platform for schools, colleges and universities. Its mission:
+ZIVAS is a focused academic operations platform for schools, colleges and universities. It helps institutions coordinate academic activity and understand what is happening across their learning environment.
 
-> Make academic activity visible, measurable and manageable — giving educators and institutions the clarity to improve learning outcomes.
+**Brand promise:** Make academic activity visible, measurable and manageable.
 
-The site leads with institutional administration, academic participation, attendance, assessment workflows and performance visibility. It deliberately does not position Zivas as a bloated all-in-one LMS or a live-class/video-conferencing product.
+The site should communicate clarity over clutter, connected academic operations rather than another bloated all-in-one LMS, educator-led decisions and institutional oversight, and honest distinction between available production capabilities and work in development.
+
+Live video classes are intentionally outside the product scope. Do not invent features, customer logos, testimonials, integrations, certifications, performance claims or public pricing.
 
 ## Product accuracy
 
 - Describe only capabilities verified in the production frontend/backend.
-- Clearly distinguish current capabilities from in-development work.
 - Institutional CBT examinations are in development and are not yet available end to end.
 - AI-assisted grading endpoints are currently disabled; manual grading remains available.
-- Full offline learning is not currently available.
+- Uploaded learning resources can be saved locally for offline access after the user downloads them while online. This is not full offline application functionality; external YouTube and Google Drive links still require internet.
 - Do not publish public pricing on this website.
-- Do not imply that this static site's demo request form transmits data to a server. It prepares an email for the visitor to review and send.
+- The demo request form prepares an email for the visitor to review and send. It does not submit data to a website server.
+
+## Design system
+
+- One type family: DM Sans.
+- Brand palette: deep navy, restrained teal, white and soft neutral surfaces.
+- Use the existing ZIVAS logo and product screenshots in assets/img/.
+- Keep layouts responsive, accessible, readable and restrained. Avoid decorative font stacks, unnecessary gradients, excessive animation and visual clutter.
+- Shared styles live in assets/css/global.css; shared navigation and demo-form behaviour live in assets/js/global.js.
 
 ## Contact
 
-- Email: zivashq@gmail.com
-- Phone: +234 810 626 5136
+- Email: support.zivas@gmail.com
+- Phone / WhatsApp: +234 811 180 1272
 
 ## Local preview
 
-Open `index.html` in a browser or run a static server from the repository root:
+Run `python -m http.server 8000` from the repository root and open http://localhost:8000.
 
-```bash
-python -m http.server 8000
-```
+This is a static HTML/CSS/JavaScript site; edit the HTML pages directly. Do not regenerate the website using the retired legacy build script.
 
-Then visit http://localhost:8000.
+## Deployment and SEO
 
-## Deployment
-
-The site is published from the `/zivas` GitHub Pages path. Keep canonical URLs, Open Graph URLs, sitemap URLs and asset paths aligned with `https://zivashq.github.io/zivas/`.
+The GitHub Pages site uses the custom domain configured in CNAME: https://zivas.online/. The GitHub Pages project URL may redirect to the custom domain. Keep canonical URLs, Open Graph URLs, sitemap URLs and asset paths aligned with that base URL.
 
 ## Repositories
 
 - Public website: https://github.com/ZivasHQ/zivas
 - Production frontend: https://github.com/ZivasHQ/zivas_production_frontend
 - Production backend: https://github.com/ZivasHQ/zivas_production_backend
-- Application: https://zivas.onrender.com/
+- Application: https://zivas.app/
