@@ -43,7 +43,7 @@ class PageParser(HTMLParser):
         if tag == "link" and attrs.get("rel", "").lower() == "canonical":
             self.canonical = attrs.get("href", "").startswith("https://zivas.online/")
         if tag == "link" and attrs.get("rel", "").lower() == "stylesheet":
-            if attrs.get("href", "").endswith("assets/css/global.css"):
+            if attrs.get("href", "").split("?")[0].endswith("assets/css/global.css"):
                 self.css_count += 1
         if tag == "script" and attrs.get("src", "").endswith("assets/js/global.js"):
             self.js_count += 1
@@ -100,6 +100,14 @@ for page in PAGES:
             target_parser.feed(target.read_text(encoding="utf-8"))
             if unquote(parts.fragment) not in target_parser.ids:
                 errors.append(f"{page}: missing anchor #{parts.fragment} in {parts.path or page}")
+
+# The homepage redesign must remain a genuinely distinct page, not only a shared CSS update.
+home = (ROOT / "index.html").read_text(encoding="utf-8")
+for required in ("v2-hero", "v2-pillar-grid", "v2-showcase-grid", "v2-cap-grid", "v2-final-cta"):
+    if required not in home:
+        errors.append(f"index.html: missing redesigned homepage section {required}")
+if "https://zivas.online/assets/img/shot-dashboard.png" not in home:
+    errors.append("index.html: social preview must use the real product dashboard image")
 
 if errors:
     print("ZIVAS website checks failed:")
