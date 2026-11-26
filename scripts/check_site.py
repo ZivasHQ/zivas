@@ -43,7 +43,7 @@ class PageParser(HTMLParser):
         if tag == "link" and attrs.get("rel", "").lower() == "canonical":
             self.canonical = attrs.get("href", "").startswith("https://zivas.online/")
         if tag == "link" and attrs.get("rel", "").lower() == "stylesheet":
-            if attrs.get("href", "").endswith("assets/css/global.css"):
+            if attrs.get("href", "").split("?")[0].endswith("assets/css/global.css"):
                 self.css_count += 1
         if tag == "script" and attrs.get("src", "").endswith("assets/js/global.js"):
             self.js_count += 1
