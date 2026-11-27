@@ -172,7 +172,7 @@ else:
         import struct
         with favicon.open("rb") as icon_file:
             header = icon_file.read(24)
-        if len(header) < 24 or header[:8] != b"\\x89PNG\\r\\n\\x1a\\n" or header[12:16] != b"IHDR":
+        if len(header) < 24 or header[:8] != b"\x89PNG\r\n\x1a\n" or header[12:16] != b"IHDR":
             errors.append("assets/img/favicon.png: invalid PNG header")
         else:
             width, height = struct.unpack(">II", header[16:24])
