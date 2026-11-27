@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://zivas.online/</loc><priority>1.0</priority></url>
-  <url><loc>https://zivas.online/institutions.html</loc><priority>0.9</priority></url>
-  <url><loc>https://zivas.online/features.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivas.online/how-it-works.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivas.online/lecturers.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivas.online/students.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivas.online/company.html</loc><priority>0.8</priority></url>
-  <url><loc>https://zivas.online/services.html</loc><priority>0.7</priority></url>
-  <url><loc>https://zivas.online/early-access.html</loc><priority>0.9</priority></url>
-  <url><loc>https://zivas.online/faq.html</loc><priority>0.6</priority></url>
-  <url><loc>https://zivas.online/privacy.html</loc><priority>0.5</priority></url>
-  <url><loc>https://zivas.online/terms.html</loc><priority>0.5</priority></url>
+  <url><loc>https://zivas.online/institutions.html</loc><lastmod>2026-11-27</lastmod><priority>0.9</priority></url>
+  <url><loc>https://zivas.online/features.html</loc><lastmod>2026-11-27</lastmod><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/how-it-works.html</loc><lastmod>2026-11-27</lastmod><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/lecturers.html</loc><lastmod>2026-11-27</lastmod><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/students.html</loc><lastmod>2026-11-27</lastmod><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/company.html</loc><lastmod>2026-11-27</lastmod><priority>0.8</priority></url>
+  <url><loc>https://zivas.online/services.html</loc><lastmod>2026-11-27</lastmod><priority>0.7</priority></url>
+  <url><loc>https://zivas.online/early-access.html</loc><lastmod>2026-11-27</lastmod><priority>0.9</priority></url>
+  <url><loc>https://zivas.online/faq.html</loc><lastmod>2026-11-27</lastmod><priority>0.6</priority></url>
+  <url><loc>https://zivas.online/privacy.html</loc><lastmod>2026-11-27</lastmod><priority>0.5</priority></url>
+  <url><loc>https://zivas.online/terms.html</loc><lastmod>2026-11-27</lastmod><priority>0.5</priority></url>
 </urlset>
