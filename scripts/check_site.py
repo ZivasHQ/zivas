@@ -163,6 +163,40 @@ for page in PAGES:
             if unquote(parts.fragment) not in target_parser.ids:
                 errors.append(f"{page}: missing anchor #{parts.fragment} in {parts.path or page}")
 
+# The homepage favicon is the asset Google and browsers are expected to discover.
+favicon = ROOT / "assets" / "img" / "favicon.png"
+if not favicon.is_file():
+    errors.append("Missing homepage favicon: assets/img/favicon.png")
+else:
+    try:
+        import struct
+        with favicon.open("rb") as icon_file:
+            header = icon_file.read(24)
+        if len(header) < 24 or header[:8] != b"\\x89PNG\\r\\n\\x1a\\n" or header[12:16] != b"IHDR":
+            errors.append("assets/img/favicon.png: invalid PNG header")
+        else:
+            width, height = struct.unpack(">II", header[16:24])
+            if width != height:
+                errors.append(f"assets/img/favicon.png: favicon must be square (found {width}x{height})")
+            if min(width, height) < 48:
+                errors.append(f"assets/img/favicon.png: Google recommends at least 48x48 (found {width}x{height})")
+    except OSError as exc:
+        errors.append(f"assets/img/favicon.png: could not be read: {exc}")
+
+# Keep the homepage's preferred Google site name explicit in structured data.
+homepage = parsers.get("index.html")
+if homepage:
+    website_nodes = []
+    for document in homepage.jsonld:
+        nodes = document.get("@graph", []) if isinstance(document, dict) else []
+        if isinstance(document, dict) and document.get("@type") == "WebSite":
+            nodes.append(document)
+        website_nodes.extend(node for node in nodes if isinstance(node, dict) and node.get("@type") == "WebSite")
+    if not any(node.get("name") == "ZIVAS" for node in website_nodes):
+        errors.append("index.html: homepage JSON-LD must declare WebSite name as ZIVAS")
+    if not any("Zenith Intelligence" in (node.get("alternateName") if isinstance(node.get("alternateName"), list) else [node.get("alternateName")]) for node in website_nodes):
+        errors.append("index.html: WebSite alternateName should include Zenith Intelligence")
+
 # Sitemap must list existing, canonical, indexable pages only.
 try:
     sitemap = ET.parse(ROOT / "sitemap.xml").getroot()
