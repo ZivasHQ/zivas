@@ -5,7 +5,7 @@
   --navy-2:#0d2b3b;
   --ink:#102a38;
   --body:#435866;
-  --muted:#71818a;
+  --muted:#586c76;
   --accent:#38cdb5;
   --accent-strong:#087e73;
   --accent-soft:#e5f7f3;
@@ -159,7 +159,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .footer-grid>div:first-child{max-width:330px}
 .footer img{width:132px;max-height:42px;object-fit:contain;object-position:left}
 .footer p{margin:16px 0;color:#9fb0b9;font-size:12px;line-height:1.8}
-.footer h4{margin:4px 0 14px;color:#fff;font-size:12px;font-weight:750}
+.footer h2{margin:4px 0 14px;color:#fff;font-size:12px;font-weight:750}
 .footer a{display:block;width:fit-content;margin:9px 0;color:#afbec6;font-size:12px;text-decoration:none}
 .footer a:hover{color:var(--accent)}
 .footer-bottom{display:flex;justify-content:space-between;gap:16px;margin-top:36px;padding-top:18px;border-top:1px solid #263944;color:#8fa0a9;font-size:11px}
@@ -242,7 +242,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .v2-orbit-one{width:500px;height:500px;right:-230px;bottom:-350px}
 .v2-orbit-two{width:700px;height:700px;right:-330px;bottom:-450px}
 .v2-audience-band{border-bottom:1px solid #e2e9e9;background:#fff}
-.v2-audience-inner{display:flex;align-items:center;justify-content:space-between;gap:25px;min-height:78px;color:#71818a;font-size:11px}
+.v2-audience-inner{display:flex;align-items:center;justify-content:space-between;gap:25px;min-height:78px;color:#536a75;font-size:11px}
 .v2-audience-inner>span{font-weight:700}
 .v2-audience-inner>div{display:flex;align-items:center;gap:20px;color:#1a3a46}
 .v2-audience-inner b{font-size:11px;font-weight:750}
@@ -258,16 +258,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .v2-intro-grid .v2-inline-link{margin-top:14px}
 .v2-pillars{background:#f2f6f5}
 .v2-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:38px;margin-bottom:42px}
-.v2-section-heading>p{max-width:440px;margin:0 0 4px;color:#637680;font-size:14px;line-height:1.8}
+.v2-section-heading>p{max-width:440px;margin:0 0 4px;color:#536a75;font-size:14px;line-height:1.8}
 .v2-pillar-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
 .v2-pillar{position:relative;display:flex;min-height:370px;flex-direction:column;overflow:hidden;padding:29px;border-radius:17px}
 .v2-pillar-dark{background:#092536;color:#fff}
 .v2-pillar-teal{background:#087f75;color:#fff}
 .v2-pillar-light{border:1px solid #dbe6e4;background:#fff;color:#102b38}
-.v2-number{font-size:10px;font-weight:800;letter-spacing:.13em;opacity:.75}
+.v2-number{font-size:10px;font-weight:800;letter-spacing:.13em;opacity:1}
 .v2-pillar-symbol{display:grid;width:54px;height:54px;place-items:center;margin:37px 0 20px;border:1px solid currentColor;border-radius:15px;font-size:27px;opacity:.9}
 .v2-pillar h3{max-width:270px;margin:0 0 12px;font-size:25px;line-height:1.18;letter-spacing:-.04em}
-.v2-pillar p{max-width:320px;margin:0 0 23px;color:inherit;font-size:13px;line-height:1.8;opacity:.78}
+.v2-pillar p{max-width:320px;margin:0 0 23px;color:inherit;font-size:13px;line-height:1.8;opacity:1}
 .v2-pillar a{display:flex;align-items:center;gap:10px;width:fit-content;margin-top:auto;color:inherit;font-size:12px;font-weight:800;text-decoration:none}
 .v2-pillar-line{position:absolute;right:-50px;bottom:-90px;width:190px;height:190px;border:1px solid currentColor;border-radius:50%;opacity:.11;box-shadow:0 0 0 25px rgba(255,255,255,.02),0 0 0 50px rgba(255,255,255,.02)}
 .v2-showcase{background:#fff}
@@ -289,7 +289,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .v2-cap-grid article{min-height:190px;padding:27px;border-right:1px solid #d9e4e2;border-bottom:1px solid #d9e4e2;background:rgba(255,255,255,.55)}
 .v2-cap-grid article>span{color:#0b8b7b;font-size:10px;font-weight:850;letter-spacing:.1em}
 .v2-cap-grid h3{margin:20px 0 8px;color:#122e3b;font-size:17px;letter-spacing:-.025em}
-.v2-cap-grid p{max-width:280px;margin:0;color:#6a7b83;font-size:12px;line-height:1.75}
+.v2-cap-grid p{max-width:280px;margin:0;color:#536a75;font-size:12px;line-height:1.75}
 .v2-principles{background:#071c2a;color:#fff}
 .v2-principles-grid{display:grid;grid-template-columns:1fr .85fr;gap:clamp(50px,8vw,110px);align-items:center}
 .v2-principles h2{max-width:600px;color:#fff}
