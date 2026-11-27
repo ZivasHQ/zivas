@@ -149,7 +149,7 @@ for page in PAGES:
         parts = urlsplit(value)
         if parts.scheme or value.startswith("//") or not parts.path:
             continue
-        target = (ROOT / unquote(parts.path)).resolve()
+        # Site-root paths (for example /assets/img/favicon.png) are rooted at the repository, not the runner filesystem.\n        relative_path = unquote(parts.path).lstrip("/")\n        target = (ROOT / relative_path).resolve()
         if not target.is_file():
             errors.append(f"{page}: broken local link or asset: {value}")
             continue
